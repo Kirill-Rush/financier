@@ -50,7 +50,12 @@ QString MainWindow::export_xls(QMainWindow *ui, QString date, QString begin_date
             if(prev_sheet)
             {
                 // получение указателя на ячейку [row][col] ((!)нумерация с единицы)
-                QAxObject* cell = current_sheet->querySubObject("Cells(QVariant,QVariant)", 14, 13); // Формула суммы средств
+                QAxObject* cell = current_sheet->querySubObject("Cells(QVariant,QVariant)", 14, 2);
+                // вставка формулы взятия оставшейся суммы на карте с прошлого месяца (любой тип, приводимый к QVariant) в полученную ячейку
+                cell->setProperty("Value", QVariant("=" + name_of_prev_sheet_in_QString + "!H14"));
+
+                // получение указателя на ячейку [row][col] ((!)нумерация с единицы)
+                cell = current_sheet->querySubObject("Cells(QVariant,QVariant)", 14, 13); // Формула суммы средств
                 // вставка формулы сравнения суммы средств с предыдущим месяцем (любой тип, приводимый к QVariant) в полученную ячейку
                 cell->setProperty("Value", QVariant("=L14/" + name_of_prev_sheet_in_QString + "!L14-1"));
 
